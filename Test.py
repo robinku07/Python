@@ -1,4 +1,4 @@
-import sys
-import os
-s=os.popen("cmd.exe","r")
-print(s)
+a="Hello How Are you Are"
+words=a.split(' ')
+for v in words:
+
