@@ -14,7 +14,6 @@ with open(FILE_ROOT , mode='a+') as vpcs_audit:
         region_security_groups = ec2.describe_security_groups()
         vpcs = ec2.describe_vpcs()
         subnets = ec2.describe_subnets()
-#        transit_gw = ec2.describe_transit_gateways()
         endpoints = ec2.describe_vpc_endpoints()
         vpn_peer_connections = ec2.describe_vpc_peering_connections()
         vpn_connections = ec2.describe_vpn_connections()
@@ -104,6 +103,4 @@ with open(FILE_ROOT, mode='a+') as iam_policies:
         print(response)
         iam_policies.write(str(response) + "\n")
 iam_policies.close()
-#print(region_list)
-#print(security_groups)
 
