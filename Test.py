@@ -1,4 +1,4 @@
-a="Hello How Are you Are"
-words=a.split(' ')
-for v in words:
-
+import boto3
+s3 = boto3.resource('s3')
+response = {}
+print(len(response))
