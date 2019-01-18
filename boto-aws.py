@@ -22,17 +22,17 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
         nat_gateways = ec2.describe_nat_gateways()
         network_acls = ec2.describe_network_acls()
         route_tables = ec2.describe_route_tables()
-        print("Region:" + region)
+        print("\t" * 6 + "Region:" + region + "\n" * 3)
         print("VPCs and Security Groups List:")
-        vpcs_audit.write("Region:" + region + "\nVPCs and Security Groups List:\n")
+        vpcs_audit.write("\t" * 6 + "Region:" + region + "\nVPCs and Security Groups List:\n")
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPCs List" + "-" * 50 + "\n")
         if vpcs['Vpcs']:
             for response in vpcs['Vpcs']:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No VPC Found")
-            vpcs_audit.write("No VPC Found\n")
+            print("No VPC Found in Region:" + region)
+            vpcs_audit.write("No VPC Found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Subnets List" + "-" * 50 + "\n")
         if subnets['Subnets']:
@@ -40,8 +40,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No Subnet found")
-            vpcs_audit.write("No Subnet found\n")
+            print("No Subnet found in Region:" + region)
+            vpcs_audit.write("No Subnet found Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VpcEndpoints List" + "-" * 50 + "\n")
         if endpoints['VpcEndpoints']:
@@ -49,8 +49,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No VPC Endpoint Found")
-            vpcs_audit.write("No VPC Endpoint Found\n")
+            print("No VPC Endpoint Found in Region:" + region)
+            vpcs_audit.write("No VPC Endpoint Found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPC Peering Connections List" + "-" * 50 + "\n")
         if vpn_peer_connections['VpcPeeringConnections']:
@@ -58,8 +58,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No VPC Peering Connection Found.")
-            vpcs_audit.write("No VPC Peering Connection Found.\n")
+            print("No VPC Peering Connection Found in Region:" + region)
+            vpcs_audit.write("No VPC Peering Connection Found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPN Connections List" + "-" * 50 + "\n")
         if vpn_connections['VpnConnections']:
@@ -67,8 +67,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No VPN Connection Found.")
-            vpcs_audit.write("No VPN Connection Found.\n")
+            print("No VPN Connection Found in Region:" + region)
+            vpcs_audit.write("No VPN Connection Found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPN Gateways List" + "-" * 50 + "\n")
         if vpn_gateways['VpnGateways']:
@@ -76,8 +76,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No VPN gateways found.")
-            vpcs_audit.write("No VPN gateways found.\n")
+            print("No VPN gateways found in Region:" + region)
+            vpcs_audit.write("No VPN gateways found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Internet Gateways List" + "-" * 50 + "\n")
         if internet_gateways['InternetGateways']:
@@ -85,8 +85,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No Internet Gateway Found.")
-            vpcs_audit.write("No Internet Gateway Found.\n")
+            print("No Internet Gateway Found in Region:" + region)
+            vpcs_audit.write("No Internet Gateway Found in Region:" + region + "\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "NAT Gateways List" + "-" * 50 + "\n")
         if nat_gateways['NatGateways']:
@@ -94,8 +94,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No NAT Gateway Found.")
-            vpcs_audit.write("No NAT Gateway Found.\n")
+            print("No NAT Gateway Found in Region:" + region)
+            vpcs_audit.write("No NAT Gateway Found in Region:" + region +"\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Network ACLs List" + "-" * 50 + "\n")
         if network_acls['NetworkAcls']:
@@ -103,8 +103,8 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
                 print(response)
                 vpcs_audit.write(str(response) + "\n")
         else:
-            print("No NetworkAcls Found.")
-            vpcs_audit.write("No NetworkAcls Found.\n")
+            print("No NetworkAcls Found in Region:" + region)
+            vpcs_audit.write("No NetworkAcls Found in Region:" + region +"\n")
 
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Route Tables List" + "-" * 50 + "\n")
         for response in route_tables['RouteTables']:
@@ -121,36 +121,50 @@ with open(FILE_ROOT, mode='a+') as vpcs_audit:
             vpcs_audit.write("No Security Group Found.\n")
 
 vpcs_audit.close()
+
 iam = boto3.client('iam', 'us-east-1')
 users = iam.list_users()
-with open(FILE_ROOT, mode='a+') as iam_users:
-    print("IAM Users List:")
-    iam_users.write("IAM Users List:\n")
-    for response in users['Users']:
-        print(response)
-        iam_users.write(str(response) + "\n")
-iam_users.close()
 groups = iam.list_groups()
-with open(FILE_ROOT, mode='a+') as iam_groups:
-    print("IAM Groups List:")
-    iam_groups.write("IAM Groups List:\n")
-    for response in groups['Groups']:
-        print(response)
-        iam_groups.write(str(response) + "\n")
-iam_groups.close()
 roles = iam.list_roles()
-with open(FILE_ROOT, mode='a+') as iam_roles:
-    print("IAM Roles List:")
-    iam_roles.write("IAM Roles List:\n")
-    for response in roles['Roles']:
-        print(response)
-        iam_roles.write(str(response) + "\n")
-iam_roles.close()
 policies = iam.list_policies()
-with open(FILE_ROOT, mode='a+') as iam_policies:
+with open(FILE_ROOT, mode='a+') as iam_audit:
+    print("IAM Users List:")
+    iam_audit.write("IAM Users List:\n")
+    if users['Users']:
+        for response in users['Users']:
+            print(response)
+            iam_audit.write(str(response) + "\n")
+    else:
+        print("No IAM User Found.")
+        iam_audit.write("No IAM User Found.\n")
+
+    print("IAM Groups List:")
+    iam_audit.write("IAM Groups List:\n")
+    if groups['Groups']:
+        for response in groups['Groups']:
+            print(response)
+            iam_audit.write(str(response) + "\n")
+    else:
+        print("No IAM Group Found.")
+        iam_audit.write("No IAM Group Found.\n")
+
+    print("IAM Roles List:")
+    iam_audit.write("IAM Roles List:\n")
+    if roles['Roles']:
+        for response in roles['Roles']:
+            print(response)
+            iam_audit.write(str(response) + "\n")
+    else:
+        print("No IAM Role Found.")
+        iam_audit.write("No IAM Role Found.\n")
+
     print("IAM Policies List:")
-    iam_policies.write("IAM Policies List:\n")
-    for response in policies['Policies']:
-        print(response)
-        iam_policies.write(str(response) + "\n")
-iam_policies.close()
+    iam_audit.write("IAM Policies List:\n")
+    if policies['Policies']:
+        for response in policies['Policies']:
+            print(response)
+            iam_audit.write(str(response) + "\n")
+    else:
+        print("No IAM Policy Found.")
+        iam_audit.write("No IAM Policy Found.\n")
+iam_audit.close()
