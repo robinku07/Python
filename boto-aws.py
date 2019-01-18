@@ -1,14 +1,14 @@
-FILE_ROOT = "c:\\repos\\Python\\"
+FILE_ROOT = "c:\\repos\\Python\\audits.log"
 import boto3
 ec2 = boto3.client('ec2', 'us-east-1')
 response = ec2.describe_regions()
 region_list = []
-with open(FILE_ROOT + "iam-audit.txt", mode='w') as iam_audit:
+with open(FILE_ROOT, mode='w') as iam_audit:
     pass
 iam_audit.close()
 for region in response['Regions']:
     region_list.append(region['RegionName'])
-with open(FILE_ROOT + "iam-audit.txt", mode='a+') as vpcs_audit:
+with open(FILE_ROOT , mode='a+') as vpcs_audit:
     for region in region_list:
         ec2 = boto3.client('ec2', region)
         region_security_groups = ec2.describe_security_groups()
@@ -73,7 +73,7 @@ with open(FILE_ROOT + "iam-audit.txt", mode='a+') as vpcs_audit:
 vpcs_audit.close()
 iam = boto3.client('iam','us-east-1')
 users = iam.list_users()
-with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_users:
+with open(FILE_ROOT, mode='a+') as iam_users:
     print("IAM Users List:")
     iam_users.write("IAM Users List:\n")
     for response in users['Users']:
@@ -81,7 +81,7 @@ with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_users:
         iam_users.write(str(response) + "\n")
 iam_users.close()
 groups = iam.list_groups()
-with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_groups:
+with open(FILE_ROOT, mode='a+') as iam_groups:
     print("IAM Groups List:")
     iam_groups.write("IAM Groups List:\n")
     for response in groups['Groups']:
@@ -89,7 +89,7 @@ with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_groups:
         iam_groups.write(str(response) + "\n")
 iam_groups.close()
 roles = iam.list_roles()
-with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_roles:
+with open(FILE_ROOT, mode='a+') as iam_roles:
     print("IAM Roles List:")
     iam_roles.write("IAM Roles List:\n")
     for response in roles['Roles']:
@@ -97,7 +97,7 @@ with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_roles:
         iam_roles.write(str(response) + "\n")
 iam_roles.close()
 policies = iam.list_policies()
-with open(FILE_ROOT + "iam-audit.txt", mode='a+') as iam_policies:
+with open(FILE_ROOT, mode='a+') as iam_policies:
     print("IAM Policies List:")
     iam_policies.write("IAM Policies List:\n")
     for response in policies['Policies']:
