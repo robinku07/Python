@@ -1,5 +1,5 @@
-FILE_ROOT = "c:\\repos\\Python\\audits.log"
 import boto3
+FILE_ROOT = "c:\\repos\\Python\\audits.log"
 ec2 = boto3.client('ec2', 'us-east-1')
 response = ec2.describe_regions()
 region_list = []
@@ -8,7 +8,7 @@ with open(FILE_ROOT, mode='w') as iam_audit:
 iam_audit.close()
 for region in response['Regions']:
     region_list.append(region['RegionName'])
-with open(FILE_ROOT , mode='a+') as vpcs_audit:
+with open(FILE_ROOT, mode='a+') as vpcs_audit:
     for region in region_list:
         ec2 = boto3.client('ec2', region)
         region_security_groups = ec2.describe_security_groups()
@@ -26,51 +26,102 @@ with open(FILE_ROOT , mode='a+') as vpcs_audit:
         print("VPCs and Security Groups List:")
         vpcs_audit.write("Region:" + region + "\nVPCs and Security Groups List:\n")
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPCs List" + "-" * 50 + "\n")
-        for response in vpcs['Vpcs']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if vpcs['Vpcs']:
+            for response in vpcs['Vpcs']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No VPC Found")
+            vpcs_audit.write("No VPC Found\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Subnets List" + "-" * 50 + "\n")
-        for response in subnets['Subnets']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if subnets['Subnets']:
+            for response in subnets['Subnets']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No Subnet found")
+            vpcs_audit.write("No Subnet found\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VpcEndpoints List" + "-" * 50 + "\n")
-        for response in endpoints['VpcEndpoints']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if endpoints['VpcEndpoints']:
+            for response in endpoints['VpcEndpoints']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No VPC Endpoint Found")
+            vpcs_audit.write("No VPC Endpoint Found\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPC Peering Connections List" + "-" * 50 + "\n")
-        for response in vpn_peer_connections['VpcPeeringConnections']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if vpn_peer_connections['VpcPeeringConnections']:
+            for response in vpn_peer_connections['VpcPeeringConnections']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No VPC Peering Connection Found.")
+            vpcs_audit.write("No VPC Peering Connection Found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPN Connections List" + "-" * 50 + "\n")
-        for response in vpn_connections['VpnConnections']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if vpn_connections['VpnConnections']:
+            for response in vpn_connections['VpnConnections']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No VPN Connection Found.")
+            vpcs_audit.write("No VPN Connection Found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "VPN Gateways List" + "-" * 50 + "\n")
-        for response in vpn_gateways['VpnGateways']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if vpn_gateways['VpnGateways']:
+            for response in vpn_gateways['VpnGateways']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No VPN gateways found.")
+            vpcs_audit.write("No VPN gateways found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Internet Gateways List" + "-" * 50 + "\n")
-        for response in internet_gateways['InternetGateways']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if internet_gateways['InternetGateways']:
+            for response in internet_gateways['InternetGateways']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No Internet Gateway Found.")
+            vpcs_audit.write("No Internet Gateway Found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "NAT Gateways List" + "-" * 50 + "\n")
-        for response in nat_gateways['NatGateways']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if nat_gateways['NatGateways']:
+            for response in nat_gateways['NatGateways']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No NAT Gateway Found.")
+            vpcs_audit.write("No NAT Gateway Found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Network ACLs List" + "-" * 50 + "\n")
-        for response in network_acls['NetworkAcls']:
-            print(response)
-            vpcs_audit.write(str(response) + "\n")
+        if network_acls['NetworkAcls']:
+            for response in network_acls['NetworkAcls']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No NetworkAcls Found.")
+            vpcs_audit.write("No NetworkAcls Found.\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Route Tables List" + "-" * 50 + "\n")
         for response in route_tables['RouteTables']:
             print(response)
             vpcs_audit.write(str(response) + "\n")
+
         vpcs_audit.write("\t" * 4 + "-" * 50 + "Security Groups List" + "-" * 50 + "\n")
-        for response in region_security_groups['SecurityGroups']:
-            print(response)
-            vpcs_audit.write(str(response)+ "\n")
+        if region_security_groups['SecurityGroups']:
+            for response in region_security_groups['SecurityGroups']:
+                print(response)
+                vpcs_audit.write(str(response) + "\n")
+        else:
+            print("No Security Group Found.")
+            vpcs_audit.write("No Security Group Found.\n")
+
 vpcs_audit.close()
-iam = boto3.client('iam','us-east-1')
+iam = boto3.client('iam', 'us-east-1')
 users = iam.list_users()
 with open(FILE_ROOT, mode='a+') as iam_users:
     print("IAM Users List:")
@@ -103,4 +154,3 @@ with open(FILE_ROOT, mode='a+') as iam_policies:
         print(response)
         iam_policies.write(str(response) + "\n")
 iam_policies.close()
-
